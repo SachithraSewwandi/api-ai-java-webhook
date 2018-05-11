@@ -44,6 +44,6 @@ public class HelloWorldController {
             }
         }
 
-        return new WebhookResponse( greeting +" Welcome to Mobitel Virtual Private Assistant", "Text " );
+        return new WebhookResponse( greeting +".! \n Welcome to Mobitel Virtual Private Assistant", "Text " );
     }
 }
