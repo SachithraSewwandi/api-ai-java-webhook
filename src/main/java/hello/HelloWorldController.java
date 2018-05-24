@@ -39,7 +39,6 @@ public class HelloWorldController {
                 greeting="Good Afternoon !";
             }else {
                 greeting="Good Evening !";
-
             }
             greeting=greeting+ ", Welcome to Mobitel Virtual Private Assistant. How Can I help You.";
         }
