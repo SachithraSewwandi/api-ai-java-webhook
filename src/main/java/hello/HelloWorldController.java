@@ -42,7 +42,7 @@ public class HelloWorldController {
         //System.out.println(test3);
         String greeting="Welcome";*/
 
-       /* if(test3.equalsIgnoreCase("Default Welcome Intent")){
+        if(test3.equalsIgnoreCase("Default Welcome Intent")){
 
             GregorianCalendar time = new GregorianCalendar();
             if(time.get(Calendar.HOUR_OF_DAY)<12){
@@ -53,7 +53,7 @@ public class HelloWorldController {
                 greeting="Good Evening !";
             }
             greeting=greeting+ ", Welcome to Mobitel Virtual Private Assistant. How Can I help You.";
-        }*/
+        }
         return new WebhookResponse( greeting , "Text " );
     }
 }
