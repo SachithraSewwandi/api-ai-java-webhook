@@ -25,7 +25,7 @@ public class HelloWorldController {
         String test= obj.substring(obj.indexOf("intentName")+1, obj.indexOf("fulfillment"));
         //Boolean word= obj.contains("intentName");
         String test2=test.substring(test.indexOf(":")+1, test.indexOf("}")).trim();
-        String test3=test2.substring(2,test2.length()-3);
+        String test3=test2.substring(1,test2.length()-1);
         System.out.println(test);
         System.out.println(test3);
         String greeting="Welcome";
