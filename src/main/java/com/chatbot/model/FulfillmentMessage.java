@@ -5,12 +5,12 @@ package com.chatbot.model;
  */
 public class FulfillmentMessage {
 
-    private Text text;
-    private Card card;
+    //private Text text;
+    //private Card card;
     private QuickReplies quickReplies;
     private String platform;
 
-    public Text getText() {
+   /* public Text getText() {
         return text;
     }
 
@@ -24,7 +24,7 @@ public class FulfillmentMessage {
 
     public void setCard(Card card) {
         this.card = card;
-    }
+    }*/
 
     public QuickReplies getQuickReplies() {
         return quickReplies;

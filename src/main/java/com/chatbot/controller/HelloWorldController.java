@@ -81,6 +81,13 @@ public class HelloWorldController {
             fulfillmentMessage.setQuickReplies(quickReplies);
         }
         fulfillmentMessages.add(fulfillmentMessage);
+        for (FulfillmentMessage fulfillmentMessage1:fulfillmentMessages){
+            //System.out.println(fulfillmentMessage1.getCard());
+            System.out.println(fulfillmentMessage1.getPlatform());
+            System.out.println(fulfillmentMessage1.getQuickReplies());
+            //System.out.println(fulfillmentMessage1.getText());
+        }
+
         QueryResult queryResult=new QueryResult();
         queryResult.setFulfillmentMessages(fulfillmentMessages);
         rs.setQueryResult(queryResult);
