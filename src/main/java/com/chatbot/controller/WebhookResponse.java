@@ -1,4 +1,4 @@
-package hello;
+package com.chatbot.controller;
 
 public class WebhookResponse {
     private final String speech;
