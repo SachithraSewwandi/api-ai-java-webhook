@@ -1,9 +1,7 @@
 package com.chatbot.controller;
 
 import com.chatbot.bo.FbGraphApiBo;
-import com.chatbot.model.FulfillmentMessage;
-import com.chatbot.model.QueryResult;
-import com.chatbot.model.QuickReplies;
+import com.chatbot.model.*;
 import com.chatbot.rest.tx.DialogflowRs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +38,7 @@ public class HelloWorldController {
         String source=rq.getOriginalDetectIntentRequest().getSource();
         DialogflowRs rs=new DialogflowRs();
         FulfillmentMessage fulfillmentMessage=new FulfillmentMessage();
+        FulfillmentMessage fulfillmentMessage1=new FulfillmentMessage();
         List<FulfillmentMessage> fulfillmentMessages=new ArrayList<FulfillmentMessage>();
         /*HttpResponseMessage response = new HttpResponseMessage();
         response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");*/
@@ -81,15 +80,17 @@ public class HelloWorldController {
             quickReplies.setQuickReplies(qr);
             fulfillmentMessage.setPlatform("FACEBOOK");
 
+            Text text=new Text();
+            List<String> textResponse=new ArrayList<>();
+            textResponse.add("asdfghjkl");
+            text.setText(textResponse);
+
             fulfillmentMessage.setQuickReplies(quickReplies);
+            fulfillmentMessage1.setText(text);
         }
         fulfillmentMessages.add(fulfillmentMessage);
-        for (FulfillmentMessage fulfillmentMessage1:fulfillmentMessages){
-            //System.out.println(fulfillmentMessage1.getCard());
-            System.out.println(fulfillmentMessage1.getPlatform());
-            System.out.println(fulfillmentMessage1.getQuickReplies());
-            //System.out.println(fulfillmentMessage1.getText());
-        }
+        fulfillmentMessages.add(fulfillmentMessage1);
+
 
         rs.setFulfillmentMessages(fulfillmentMessages);
         rs.setFulfillmentText("Text");
