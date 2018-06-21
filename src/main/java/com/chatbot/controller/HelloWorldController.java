@@ -3,6 +3,7 @@ package com.chatbot.controller;
 import com.chatbot.bo.FbGraphApiBo;
 import com.chatbot.model.*;
 import com.chatbot.rest.tx.DialogflowRs;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,14 +35,17 @@ public class HelloWorldController {
         System.out.println(rq.getQueryResult().getIntent().getDisplayName());
 
         String message="";
+        //Gson gson = new Gson();
+        ObjectMapper mapper = new ObjectMapper();
         String intentName=rq.getQueryResult().getIntent().getDisplayName();
         String source=rq.getOriginalDetectIntentRequest().getSource();
         DialogflowRs rs=new DialogflowRs();
-        FulfillmentMessage fulfillmentMessage=new FulfillmentMessage();
-        FulfillmentMessage fulfillmentMessage1=new FulfillmentMessage();
-        List<FulfillmentMessage> fulfillmentMessages=new ArrayList<FulfillmentMessage>();
+        FulfillmentMessageQuickReply fulfillmentMessageQuickReply=new FulfillmentMessageQuickReply();
+        FulfillmentMessageText fulfillmentMessageText=new FulfillmentMessageText();
+        List<Object> fulfillmentMessages=new ArrayList<Object>();
         /*HttpResponseMessage response = new HttpResponseMessage();
         response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");*/
+        String res="";
 
 
 
@@ -78,19 +82,29 @@ public class HelloWorldController {
             qr.add("New Upahara");
             qr.add("Meth Garu Saru");
             quickReplies.setQuickReplies(qr);
-            fulfillmentMessage.setPlatform("FACEBOOK");
+            //fulfillmentMessage.setPlatform("FACEBOOK");
+            fulfillmentMessageQuickReply.setQuickReplies(quickReplies);
 
             Text text=new Text();
             List<String> textResponse=new ArrayList<>();
             textResponse.add("asdfghjkl");
             text.setText(textResponse);
+            fulfillmentMessageText.setText(text);
 
-            fulfillmentMessage.setQuickReplies(quickReplies);
-            fulfillmentMessage1.setText(text);
+            //String jsonInString = "quickReplies" +":" + mapper.writeValueAsString(quickReplies);
+            //jsonInString=jsonInString.replace("\"","");
+            //System.out.println(jsonInString);
+            //String textstring =  "text" +":" + mapper.writeValueAsString(text);
+            //System.out.println(textstring);
+            //System.out.println( );
+            //res="[ {"+ textstring+"," +jsonInString +"}]";
+            //System.out.println(res);
+
+            /*fulfillmentMessage.setQuickReplies(quickReplies);
+            fulfillmentMessage1.setText(text);*/
         }
-        fulfillmentMessages.add(fulfillmentMessage);
-        fulfillmentMessages.add(fulfillmentMessage1);
-
+        fulfillmentMessages.add(fulfillmentMessageText);
+        fulfillmentMessages.add(fulfillmentMessageQuickReply);
 
         rs.setFulfillmentMessages(fulfillmentMessages);
         rs.setFulfillmentText("Text");

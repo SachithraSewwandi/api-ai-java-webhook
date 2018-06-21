@@ -25,4 +25,9 @@ public class QuickReplies {
     public void setQuickReplies(List<String> quickReplies) {
         this.quickReplies = quickReplies;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

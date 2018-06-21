@@ -12,7 +12,8 @@ import java.util.List;
 public class DialogflowRs {
 
     private String fulfillmentText;
-    private List<FulfillmentMessage> fulfillmentMessages;
+    private List<Object> fulfillmentMessages;
+    //private String fulfillmentMessages;
     private String source;
 
     public String getFulfillmentText() {
@@ -23,11 +24,11 @@ public class DialogflowRs {
         this.fulfillmentText = fulfillmentText;
     }
 
-    public List<FulfillmentMessage> getFulfillmentMessages() {
+    public List<Object> getFulfillmentMessages() {
         return fulfillmentMessages;
     }
 
-    public void setFulfillmentMessages(List<FulfillmentMessage> fulfillmentMessages) {
+    public void setFulfillmentMessages(List<Object> fulfillmentMessages) {
         this.fulfillmentMessages = fulfillmentMessages;
     }
 

@@ -43,4 +43,9 @@ public class Card {
     public void setButtons(List<Buttons> buttons) {
         this.buttons = buttons;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
