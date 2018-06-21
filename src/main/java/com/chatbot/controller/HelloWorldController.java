@@ -32,7 +32,9 @@ public class HelloWorldController {
     public @ResponseBody DialogflowRs webhook(
             @RequestBody DialogflowRq rq) throws IOException {
 
+        System.out.println(rq);
         System.out.println(rq.getQueryResult().getIntent().getDisplayName());
+
         String message="";
         String intentName=rq.getQueryResult().getIntent().getDisplayName();
         String source=rq.getOriginalDetectIntentRequest().getSource();
@@ -82,6 +84,7 @@ public class HelloWorldController {
         QueryResult queryResult=new QueryResult();
         queryResult.setFulfillmentMessages(fulfillmentMessages);
         rs.setQueryResult(queryResult);
+        System.out.println(rs);
         return rs;
     }
 }
