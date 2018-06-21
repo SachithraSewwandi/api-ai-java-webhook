@@ -1,47 +1,41 @@
 package com.chatbot.rest.tx;
 
+import com.chatbot.model.FulfillmentMessage;
 import com.chatbot.model.OriginalDetectIntentRequest;
 import com.chatbot.model.QueryResult;
+
+import java.util.List;
 
 /**
  * Created by sewwandiwi on 6/17/2018.
  */
 public class DialogflowRs {
 
-    private String responseId;
-    private QueryResult queryResult;
-    private OriginalDetectIntentRequest originalDetectIntentRequest;
-    private String session;
+    private String fulfillmentText;
+    private List<FulfillmentMessage> fulfillmentMessages;
+    private String source;
 
-    public String getResponseId() {
-        return responseId;
+    public String getFulfillmentText() {
+        return fulfillmentText;
     }
 
-    public void setResponseId(String responseId) {
-        this.responseId = responseId;
+    public void setFulfillmentText(String fulfillmentText) {
+        this.fulfillmentText = fulfillmentText;
     }
 
-    public QueryResult getQueryResult() {
-        return queryResult;
+    public List<FulfillmentMessage> getFulfillmentMessages() {
+        return fulfillmentMessages;
     }
 
-    public void setQueryResult(QueryResult queryResult) {
-        this.queryResult = queryResult;
+    public void setFulfillmentMessages(List<FulfillmentMessage> fulfillmentMessages) {
+        this.fulfillmentMessages = fulfillmentMessages;
     }
 
-    public OriginalDetectIntentRequest getOriginalDetectIntentRequest() {
-        return originalDetectIntentRequest;
+    public String getSource() {
+        return source;
     }
 
-    public void setOriginalDetectIntentRequest(OriginalDetectIntentRequest originalDetectIntentRequest) {
-        this.originalDetectIntentRequest = originalDetectIntentRequest;
-    }
-
-    public String getSession() {
-        return session;
-    }
-
-    public void setSession(String session) {
-        this.session = session;
+    public void setSource(String source) {
+        this.source = source;
     }
 }

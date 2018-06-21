@@ -41,6 +41,8 @@ public class HelloWorldController {
         DialogflowRs rs=new DialogflowRs();
         FulfillmentMessage fulfillmentMessage=new FulfillmentMessage();
         List<FulfillmentMessage> fulfillmentMessages=new ArrayList<FulfillmentMessage>();
+        /*HttpResponseMessage response = new HttpResponseMessage();
+        response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");*/
 
 
 
@@ -77,6 +79,7 @@ public class HelloWorldController {
             qr.add("New Upahara");
             qr.add("Meth Garu Saru");
             quickReplies.setQuickReplies(qr);
+            fulfillmentMessage.setPlatform("FACEBOOK");
 
             fulfillmentMessage.setQuickReplies(quickReplies);
         }
@@ -88,9 +91,12 @@ public class HelloWorldController {
             //System.out.println(fulfillmentMessage1.getText());
         }
 
-        QueryResult queryResult=new QueryResult();
-        queryResult.setFulfillmentMessages(fulfillmentMessages);
-        rs.setQueryResult(queryResult);
+        rs.setFulfillmentMessages(fulfillmentMessages);
+        rs.setFulfillmentText("Text");
+        rs.setSource("java-webhook");
+        //QueryResult queryResult=new QueryResult();
+        //rq.getQueryResult().setFulfillmentMessages(fulfillmentMessages);
+        //rq.setQueryResult(queryResult);
         System.out.println(rs);
         return rs;
     }
