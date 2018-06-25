@@ -157,6 +157,7 @@ public class HelloWorldController {
 
         List<DBIntentResponse> intentResponseList=intentResponseRepository.findByIntentId(intent.getIntentId());
         for (DBIntentResponse intentResponse:intentResponseList){
+            System.out.println("inlist:"+intentResponse.getIntentResponseId());
             if(intentResponse.getResponseTypeId().equals(Long.valueOf(1))){
                 DBTextResponse textResponse=textResponseRespository.findByTextResponseId(intentResponse.getResponseId());
                 if(intent.getDisplayName().equalsIgnoreCase("Default Welcome Intent")){
