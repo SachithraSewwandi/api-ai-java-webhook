@@ -92,6 +92,7 @@ public class HelloWorldController {
         FulfillmentMessageText fulfillmentMessageText=new FulfillmentMessageText();
         FulfillmentMessageCard fulfillmentMessageCard=new FulfillmentMessageCard();
         List<Object> fulfillmentMessages=new ArrayList<Object>();
+        DBMessage message=new DBMessage();
 
 
         String intentName=rq.getQueryResult().getIntent().getDisplayName();
@@ -133,18 +134,21 @@ public class HelloWorldController {
                 fbUser=fbUserRespository.save(fbUser);
 
             }
+            message.setUserId(user.getUserId());
+        }else {
+            message.setUserId(user1.getUserId());
         }
 
         DBIntent intent= intentRespository.findByDialogflowIntentId(dialogflowIntentId);
         System.out.println("Intent:"+intent.getDisplayName());
 
-        DBMessage message=new DBMessage();
+
         message.setIntentId(intent.getIntentId());
         message.setMessage(rq.getQueryResult().getQueryText());
         message.setMessageTimeStamp(date);
         message.setPlatformId(dbPlatform.getPlatformId());
         message.setSessionId(sessionId);
-        message.setUserId(user1.getUserId());
+
 
         message=messageRespository.save(message);
 
