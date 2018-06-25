@@ -21,7 +21,7 @@ import java.util.*;
 
 
 @Controller
-//@RequestMapping("/webhook")
+@RequestMapping("/webhook")
 public class HelloWorldController {
 
     @Autowired
@@ -70,7 +70,7 @@ public class HelloWorldController {
     WelcomeBo welcomeBo;
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/webhook")
+    @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody DialogflowRs webhook(
             @RequestBody DialogflowRq rq) throws IOException {
 
