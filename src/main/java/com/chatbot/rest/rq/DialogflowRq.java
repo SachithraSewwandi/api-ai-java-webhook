@@ -1,7 +1,7 @@
 package com.chatbot.rest.rq;
 
-import com.chatbot.model.OriginalDetectIntentRequest;
-import com.chatbot.model.QueryResult;
+import com.chatbot.rest.model.OriginalDetectIntentRequest;
+import com.chatbot.rest.model.QueryResult;
 
 /**
  * Created by sewwandiwi on 6/17/2018.

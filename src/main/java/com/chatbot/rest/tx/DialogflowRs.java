@@ -1,9 +1,5 @@
 package com.chatbot.rest.tx;
 
-import com.chatbot.model.FulfillmentMessage;
-import com.chatbot.model.OriginalDetectIntentRequest;
-import com.chatbot.model.QueryResult;
-
 import java.util.List;
 
 /**

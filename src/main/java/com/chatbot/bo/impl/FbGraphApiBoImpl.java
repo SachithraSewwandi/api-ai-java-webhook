@@ -7,12 +7,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import com.chatbot.rest.tx.FbGraphApiUser;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 import static org.apache.http.HttpHeaders.USER_AGENT;
 
@@ -23,7 +26,7 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
 @Service("fbGraphApiBo")
 public class FbGraphApiBoImpl implements FbGraphApiBo{
 
-    private String appToken="?access_token=EAAH9MX7nyTQBAJx4Ctr0UE1TRnD4smZCMJSKTGnGxfSoKUVJCDns0abhfoGDbGdxmXZBo86ZCdc9XXOzylD04ygwNPFkUZAgtoDAjG7YUbMnc4ZByuJbd19rbdXscqTAx2xEigLdHlRfdBdxUOoOcfx3yP03gIIgrWcz0wvZAlZC2aUJKwqjo2XZCmietuTaDZA03OcUQI4fpbgZDZD";
+    private String appToken="?access_token=EAAH9MX7nyTQBAIiuiOdZBqI3HFACErt1DzJkwnLZA4WVF5dOyYm0AM2z3A9hsOsgZA80RzAsGHyUtqvNHXU1mZArLL9ixD56htlchRr1jd6gtpNmVcp20qj4bvzi5qmKZAnlgx48P6UbZAShWMDGcjeEdQ4ZCHNBcGFYLeeZBg7zPAZDZD";
 
 
     //private RestClient fbGraphTemplate;
@@ -37,29 +40,32 @@ public class FbGraphApiBoImpl implements FbGraphApiBo{
     public FbGraphApiUser getFbUserName(String userId) throws IOException  {
 
         //String url = "http://www.google.com/search?q=httpClient";
-        FbGraphApiUser fbGraphApiUser=new FbGraphApiUser();
+       // FbGraphApiUser fbGraphApiUser=new FbGraphApiUser();
 
        String fbgraphApiUrl=url+userId+appToken;
-       System.out.println(fbgraphApiUrl);
+       //System.out.println(fbgraphApiUrl);
 
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(fbgraphApiUrl);
+        // HttpHeaders
+        HttpHeaders headers = new HttpHeaders();
 
-        // add request header
-        request.addHeader("User-Agent", USER_AGENT);
-        HttpResponse response = client.execute(request);
+        headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
+        // Request to return JSON format
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("my_other_key", "my_other_value");
 
-        System.out.println("Response Code : "
-                + response.getStatusLine().getStatusCode());
+        // HttpEntity<String>: To get result as String.
+        HttpEntity<FbGraphApiUser> entity = new HttpEntity<FbGraphApiUser>(headers);
 
-        BufferedReader rd = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
+        // RestTemplate
+        RestTemplate restTemplate = new RestTemplate();
 
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
+        // Send request with GET method, and Headers.
+        ResponseEntity<FbGraphApiUser> response = restTemplate.exchange(fbgraphApiUrl, //
+                HttpMethod.GET, entity, FbGraphApiUser.class);
+
+        FbGraphApiUser fbGraphApiUser = response.getBody();
+
+
 
         return fbGraphApiUser;
     }
