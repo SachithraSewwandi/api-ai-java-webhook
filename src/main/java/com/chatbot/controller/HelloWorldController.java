@@ -190,6 +190,7 @@ public class HelloWorldController {
                 List<DBCardButtons> buttonsList=cardButtonRespository.findByCardResponseId(cardResponse.getCardResponseId());
                 Card card=new Card();
                 card.setTitle(cardResponse.getTitle());
+                System.out.println("card:"+ card.getTitle());
                 card.setSubtitle(cardResponse.getSubtitle());
                 List <Buttons> cardbuttonList=new ArrayList<>();
                 for (DBCardButtons buttons:buttonsList){
