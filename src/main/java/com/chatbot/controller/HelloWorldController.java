@@ -102,6 +102,7 @@ public class HelloWorldController {
         String[] session=rq.getSession().split("/");
         String sessionId=session[session.length-1];
         System.out.println("sessionID:"+sessionId);
+        System.out.println("sessionID:"+sessionId);
 
         List<DBPlatform> platformList=platformRepository.findAll();
         for (DBPlatform dbPlatform1:platformList){
