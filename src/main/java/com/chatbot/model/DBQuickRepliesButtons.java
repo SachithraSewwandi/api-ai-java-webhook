@@ -13,7 +13,7 @@ public class DBQuickRepliesButtons {
     private Long quickRepliesButtonId;
 
     @Column(name = "quick_reply_response_id")
-    private String quickReplyResponseId;
+    private Long quickReplyResponseId;
 
     @Column(name = "quick_reply_title")
     private String quickReplyTitle;
@@ -26,11 +26,11 @@ public class DBQuickRepliesButtons {
         this.quickRepliesButtonId = quickRepliesButtonId;
     }
 
-    public String getQuickReplyResponseId() {
+    public Long getQuickReplyResponseId() {
         return quickReplyResponseId;
     }
 
-    public void setQuickReplyResponseId(String quickReplyResponseId) {
+    public void setQuickReplyResponseId(Long quickReplyResponseId) {
         this.quickReplyResponseId = quickReplyResponseId;
     }
 
