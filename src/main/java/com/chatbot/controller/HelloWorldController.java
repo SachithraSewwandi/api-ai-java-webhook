@@ -130,6 +130,7 @@ public class HelloWorldController {
                 fbUser.setFbId(senderId);
                 fbUser.setFirstName(sender);
                 fbUser.setLast_name(fbGraphApiUser.getLast_name());
+                System.out.println("sender name:"+fbGraphApiUser.getFirst_name());
 
                 fbUser=fbUserRespository.save(fbUser);
 
@@ -161,11 +162,13 @@ public class HelloWorldController {
                 if(intent.getDisplayName().equalsIgnoreCase("Default Welcome Intent")){
                     String greeting=welcomeBo.greetingText(rq.getOriginalDetectIntentRequest().getPayload().getSender().getId());
                     textResponse.setText(greeting + textResponse.getText());
+                    System.out.println("text:"+textResponse.getText());
                 }
                 Text text=new Text();
                 List<String> textList=new ArrayList<>();
                 textList.add(textResponse.getText());
                 text.setText(textList);
+                System.out.println("text:"+textList.get(0));
                 fulfillmentMessageText.setText(text);
                 fulfillmentMessages.add(fulfillmentMessageText);
             }else if(intentResponse.getResponseTypeId().equals(Long.valueOf(2))){
