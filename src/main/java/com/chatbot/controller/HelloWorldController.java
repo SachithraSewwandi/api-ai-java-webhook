@@ -21,7 +21,7 @@ import java.util.*;
 
 
 @Controller
-@RequestMapping("/webhook")
+//@RequestMapping("/webhook")
 public class HelloWorldController {
 
     @Autowired
@@ -70,7 +70,7 @@ public class HelloWorldController {
     WelcomeBo welcomeBo;
 
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, value = "/webhook")
     public @ResponseBody DialogflowRs webhook(
             @RequestBody DialogflowRq rq) throws IOException {
 
@@ -177,6 +177,7 @@ public class HelloWorldController {
                 List<DBQuickRepliesButtons> buttonsList=quickRepliesButtonRespository.findByQuickReplyResponseId(quickRepliesResponse.getQuickRepliesId());
                 QuickReplies quickReplies=new QuickReplies();
                 quickReplies.setTitle(quickRepliesResponse.getTitle());
+                System.out.println("QR:"+quickReplies.getTitle());
                 List <String> quickrepliesList=new ArrayList<>();
                 for (DBQuickRepliesButtons buttons:buttonsList){
                     quickrepliesList.add(buttons.getQuickReplyTitle());
