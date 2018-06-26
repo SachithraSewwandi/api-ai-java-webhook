@@ -252,7 +252,7 @@ public class HelloWorldController {
         return rs;
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/listUser")
+    /*@RequestMapping(method = RequestMethod.PUT, value = "/listUser")
     public @ResponseBody
     IntentSummaryRs listUser( ){
 
@@ -279,7 +279,7 @@ public class HelloWorldController {
         rs.setCode(1000);
         rs.setMessage("Success");
         return rs;
-    }
+    }*/
 
 
 }
