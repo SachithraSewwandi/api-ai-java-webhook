@@ -7,6 +7,7 @@ import com.chatbot.model.*;
 import com.chatbot.model.repository.*;
 import com.chatbot.rest.model.*;
 import com.chatbot.rest.tx.DialogflowRs;
+import com.chatbot.rest.tx.IntentSummaryRs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,8 @@ import com.chatbot.rest.tx.FbGraphApiUser;
 
 import java.io.IOException;
 import java.util.*;
+
+import static java.lang.Math.round;
 
 
 @Controller
@@ -112,29 +115,32 @@ public class HelloWorldController {
         }
         System.out.println("platformID:"+dbPlatform.getPlatformId());
         DBUser user1=userRespository.findBySessionId(sessionId);
-
+        String senderId=rq.getOriginalDetectIntentRequest().getPayload().getSender().getId();
 
         if(user1==(null)){
 
             user.setPlatformId(dbPlatform.getPlatformId());
             user.setSessionId(sessionId);
             user.setSessionStartedTime(date);
+            user.setPlatformUniqueUserId(rq.getOriginalDetectIntentRequest().getPayload().getSender().getId());
 
             user =userRespository.save(user);
             System.out.println("UserID:"+user.getUserId());
 
             if (dbPlatform.getPlatformId()==1){
-                String senderId=rq.getOriginalDetectIntentRequest().getPayload().getSender().getId();
-                FbGraphApiUser fbGraphApiUser=fbGraphApiBo.getFbUserName(senderId);
-                sender=fbGraphApiUser.getFirst_name();
-                fbUser.setUserId(user.getUserId());
-                fbUser.setFbId(senderId);
-                fbUser.setFirstName(sender);
-                fbUser.setLast_name(fbGraphApiUser.getLast_name());
-                System.out.println("sender name:"+fbGraphApiUser.getFirst_name());
+                DBFbUser dbFbUser1=fbUserRespository.findByFbId(senderId);
 
-                fbUser=fbUserRespository.save(fbUser);
+                if(dbFbUser1==null){
+                    FbGraphApiUser fbGraphApiUser=fbGraphApiBo.getFbUserName(senderId);
+                    sender=fbGraphApiUser.getFirst_name();
+                    // fbUser.setUserId(user.getUserId());
+                    fbUser.setFbId(senderId);
+                    fbUser.setFirstName(sender);
+                    fbUser.setLast_name(fbGraphApiUser.getLast_name());
+                    System.out.println("sender name:"+fbGraphApiUser.getFirst_name());
 
+                    fbUser=fbUserRespository.save(fbUser);
+                }
             }
             message.setUserId(user.getUserId());
         }else {
@@ -209,57 +215,69 @@ public class HelloWorldController {
 
         }
 
-        /*if(intentName.equalsIgnoreCase("Default Welcome DBIntent")){
-
-            if(source.equals("facebook")){
-                String senderId=rq.getOriginalDetectIntentRequest().getPayload().getSender().getId();
-                FbGraphApiUser fbGraphApiUser=fbGraphApiBo.getFbUserName(senderId);
-                sender=fbGraphApiUser.getFirst_name();
-                //System.out.println("Sender:" +sender);
-            }
-
-            GregorianCalendar time = new GregorianCalendar();
-            if(time.get(Calendar.HOUR_OF_DAY)<12){
-                message="Good Morning !";
-            }else if(time.get(Calendar.HOUR_OF_DAY)>=12 && time.get(Calendar.HOUR_OF_DAY)<16){
-                message="Good Afternoon !";
-            }else {
-                message="Good Evening !";
-            }
-
-            //FbGraphApiUser fbGraphApiUser=fbGraphApiBo.getFbUserName();
-            message=message+ ", Welcome to Mobitel Virtual Private Assistant. How Can I help You.";
-        }else if(intentName.equalsIgnoreCase("Contact Agent")){
-
-            message="hi, How can I assist you";
-        }else if(intentName.equalsIgnoreCase("Mobitel Upahara")){
-            QuickReplies quickReplies=new QuickReplies();
-            quickReplies.setTitle("Select an option from below, please scroll horizontally for more options");
-            List<String> qr=new ArrayList<>();
-            qr.add("New Upahara");
-            qr.add("Meth Garu Saru");
-            quickReplies.setQuickReplies(qr);
-            //fulfillmentMessage.setPlatform("FACEBOOK");
-            fulfillmentMessageQuickReply.setQuickReplies(quickReplies);
-
-            Text text=new Text();
-            List<String> textResponse=new ArrayList<>();
-            textResponse.add("asdfghjkl");
-            text.setText(textResponse);
-            fulfillmentMessageText.setText(text);
-
-            DBPlatform platform=platformRepository.findByPlatformId(Long.valueOf(1));
-            System.out.println("******"+platform.getPlatformName());
-
-        }*/
-        /*fulfillmentMessages.add(fulfillmentMessageText);
-        fulfillmentMessages.add(fulfillmentMessageQuickReply);*/
-
         rs.setFulfillmentMessages(fulfillmentMessages);
         rs.setFulfillmentText("Text");
         rs.setSource("java-webhook");
 
         System.out.println(rs);
+        return rs;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/intentummary")
+    public @ResponseBody
+    IntentSummaryRs intentSummary( ){
+
+        IntentSummaryRs rs=new IntentSummaryRs();
+        //List<IntentPrecentage> intentPrecentageList=messageRespository.getIntentCount();
+        List<DBIntent> intentList=intentRespository.findAll();
+        Long messageCount=messageRespository.count();
+        System.out.println(messageCount);
+        List <IntentPrecentage> intentPrecentageList=new ArrayList<>();
+
+
+        for (DBIntent intent:intentList){
+            Long intentcount=messageRespository.countByIntentId(intent.getIntentId());
+            int precentage=(int) Math.round((Double.valueOf(intentcount)/Double.valueOf(messageCount))*100);
+            IntentPrecentage intentPrecentage=new IntentPrecentage();
+            intentPrecentage.setIntentID(intent.getIntentId());
+            intentPrecentage.setIntentName(intent.getDisplayName());
+            intentPrecentage.setIntentPrecentage(precentage);
+            System.out.println(intentcount + " "+intent.getDisplayName()+" "+precentage);
+            intentPrecentageList.add(intentPrecentage);
+        }
+        rs.setIntentPrecentageList(intentPrecentageList);
+        rs.setTotalQueries(messageCount);
+        rs.setCode(1000);
+        rs.setMessage("Success");
+        return rs;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/listUser")
+    public @ResponseBody
+    IntentSummaryRs listUser( ){
+
+        IntentSummaryRs rs=new IntentSummaryRs();
+        //List<IntentPrecentage> intentPrecentageList=messageRespository.getIntentCount();
+        List<DBIntent> intentList=intentRespository.findAll();
+        Long messageCount=messageRespository.count();
+        System.out.println(messageCount);
+        List <IntentPrecentage> intentPrecentageList=new ArrayList<>();
+
+
+        for (DBIntent intent:intentList){
+            Long intentcount=messageRespository.countByIntentId(intent.getIntentId());
+            int precentage=(int) Math.round((Double.valueOf(intentcount)/Double.valueOf(messageCount))*100);
+            IntentPrecentage intentPrecentage=new IntentPrecentage();
+            intentPrecentage.setIntentID(intent.getIntentId());
+            intentPrecentage.setIntentName(intent.getDisplayName());
+            intentPrecentage.setIntentPrecentage(precentage);
+            System.out.println(intentcount + " "+intent.getDisplayName()+" "+precentage);
+            intentPrecentageList.add(intentPrecentage);
+        }
+        rs.setIntentPrecentageList(intentPrecentageList);
+        rs.setTotalQueries(messageCount);
+        rs.setCode(1000);
+        rs.setMessage("Success");
         return rs;
     }
 

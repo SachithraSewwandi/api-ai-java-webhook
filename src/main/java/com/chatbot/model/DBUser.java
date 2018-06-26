@@ -25,6 +25,10 @@ public class DBUser {
    @Column(name = "feed_back_number")
     private Long feedBackNumber;
 
+
+    @Column(name = "platform_unique_user_id")
+    private String platformUniqueUserId;
+
     public Long getUserId() {
         return userId;
     }
@@ -63,5 +67,13 @@ public class DBUser {
 
     public void setFeedBackNumber(Long feedBackNumber) {
         this.feedBackNumber = feedBackNumber;
+    }
+
+    public String getPlatformUniqueUserId() {
+        return platformUniqueUserId;
+    }
+
+    public void setPlatformUniqueUserId(String platformUniqueUserId) {
+        this.platformUniqueUserId = platformUniqueUserId;
     }
 }

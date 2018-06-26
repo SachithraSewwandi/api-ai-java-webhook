@@ -11,4 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface FbUserRespository extends CrudRepository<DBFbUser, Long> {
 
     DBFbUser save(DBFbUser fbUser);
+
+    //Boolean existsByFbId(String fbId);
+
+    DBFbUser findByFbId(String fbId);
+
 }

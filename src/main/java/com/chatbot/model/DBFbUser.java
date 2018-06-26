@@ -13,8 +13,8 @@ public class DBFbUser {
     @Column(name = "fb_user_id")
     private Long fbUserId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    /*@Column(name = "user_id")
+    private Long userId;*/
 
     @Column(name = "fb_id")
     private String fbId;
@@ -36,13 +36,13 @@ public class DBFbUser {
         this.fbUserId = fbUserId;
     }
 
-    public Long getUserId() {
+  /*  public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
+    }*/
 
     public String getFbId() {
         return fbId;
