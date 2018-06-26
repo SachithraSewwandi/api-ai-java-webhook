@@ -23,7 +23,7 @@ public class DBFbUser {
     private String firstName;
 
    @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
 
    @Column(name = "status")
    private String status;
@@ -60,12 +60,12 @@ public class DBFbUser {
         this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getStatus() {

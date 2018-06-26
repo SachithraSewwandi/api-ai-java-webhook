@@ -8,12 +8,10 @@ import com.chatbot.model.repository.*;
 import com.chatbot.rest.model.*;
 import com.chatbot.rest.tx.DialogflowRs;
 import com.chatbot.rest.tx.IntentSummaryRs;
+import com.chatbot.rest.tx.ListFbUserRs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.chatbot.rest.rq.DialogflowRq;
 import com.chatbot.rest.tx.FbGraphApiUser;
 
@@ -136,7 +134,7 @@ public class HelloWorldController {
                     // fbUser.setUserId(user.getUserId());
                     fbUser.setFbId(senderId);
                     fbUser.setFirstName(sender);
-                    fbUser.setLast_name(fbGraphApiUser.getLast_name());
+                    fbUser.setLastName(fbGraphApiUser.getLast_name());
                     System.out.println("sender name:"+fbGraphApiUser.getFirst_name());
 
                     fbUser=fbUserRespository.save(fbUser);
@@ -252,34 +250,41 @@ public class HelloWorldController {
         return rs;
     }
 
-    /*@RequestMapping(method = RequestMethod.PUT, value = "/listUser")
+    @RequestMapping(method = RequestMethod.PUT, value = "/listUser")
     public @ResponseBody
-    IntentSummaryRs listUser( ){
+    ListFbUserRs listUser(@RequestParam(value = "q", defaultValue = "") String name){
 
-        IntentSummaryRs rs=new IntentSummaryRs();
-        //List<IntentPrecentage> intentPrecentageList=messageRespository.getIntentCount();
-        List<DBIntent> intentList=intentRespository.findAll();
-        Long messageCount=messageRespository.count();
-        System.out.println(messageCount);
-        List <IntentPrecentage> intentPrecentageList=new ArrayList<>();
-
-
-        for (DBIntent intent:intentList){
-            Long intentcount=messageRespository.countByIntentId(intent.getIntentId());
-            int precentage=(int) Math.round((Double.valueOf(intentcount)/Double.valueOf(messageCount))*100);
-            IntentPrecentage intentPrecentage=new IntentPrecentage();
-            intentPrecentage.setIntentID(intent.getIntentId());
-            intentPrecentage.setIntentName(intent.getDisplayName());
-            intentPrecentage.setIntentPrecentage(precentage);
-            System.out.println(intentcount + " "+intent.getDisplayName()+" "+precentage);
-            intentPrecentageList.add(intentPrecentage);
-        }
-        rs.setIntentPrecentageList(intentPrecentageList);
-        rs.setTotalQueries(messageCount);
-        rs.setCode(1000);
-        rs.setMessage("Success");
+       ListFbUserRs rs=new ListFbUserRs();
+       List<FBUser> userList=new ArrayList<>();
+       List<DBFbUser> dbFbUserList=new ArrayList<>();
+       List<DBFbUser> dbFbUserList1=new ArrayList<>();
+       if(name==""){
+           dbFbUserList=fbUserRespository.findAll();
+       }else {
+           // dbFbUserList=fbUserRespository.findByFirstName(name);
+           // dbFbUserList1=fbUserRespository.findByLastName(name);
+           //dbFbUserList=fbUserRespository.findByFirstNameAndLastName(name);
+           dbFbUserList=fbUserRespository.findByFirstNameContaining(name);
+       }
+       if(dbFbUserList.size()>0){
+           for (DBFbUser fbUser:dbFbUserList){
+               FBUser fbUser1=new FBUser();
+               fbUser1.setName(fbUser.getFirstName()+ " "+fbUser.getLastName());
+               fbUser1.setFbId(fbUser.getFbUserId());
+               userList.add(fbUser1);
+           }
+       }
+        /*if (dbFbUserList1.size() > 0) {
+            for (DBFbUser fbUser : dbFbUserList1) {
+                FBUser fbUser1 = new FBUser();
+                fbUser1.setName(fbUser.getFirstName() + " " + fbUser.getLastName());
+                fbUser1.setFbId(fbUser.getFbUserId());
+                userList.add(fbUser1);
+            }
+        }*/
+       rs.setFbUserList(userList);
         return rs;
-    }*/
+    }
 
 
 }
