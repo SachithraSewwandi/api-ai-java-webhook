@@ -6,14 +6,11 @@ import com.chatbot.bo.WelcomeBo;
 import com.chatbot.model.*;
 import com.chatbot.model.repository.*;
 import com.chatbot.rest.model.*;
-import com.chatbot.rest.tx.DialogflowRs;
-import com.chatbot.rest.tx.IntentSummaryRs;
-import com.chatbot.rest.tx.ListFbUserRs;
+import com.chatbot.rest.tx.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.chatbot.rest.rq.DialogflowRq;
-import com.chatbot.rest.tx.FbGraphApiUser;
 
 import java.io.IOException;
 import java.util.*;
@@ -69,6 +66,9 @@ public class HelloWorldController {
 
     @Autowired
     WelcomeBo welcomeBo;
+
+    @Autowired
+    MessageResponseRespository messageResponseRespository;
 
 
     @RequestMapping(method = RequestMethod.POST)
@@ -162,6 +162,17 @@ public class HelloWorldController {
 
         List<DBIntentResponse> intentResponseList=intentResponseRepository.findByIntentId(intent.getIntentId());
         for (DBIntentResponse intentResponse:intentResponseList){
+
+            DBMessageResponse messageResponse=new DBMessageResponse();
+            messageResponse.setMessageId(message.getMessageId());
+            messageResponse.setIntentId(intentResponse.getIntentId());
+            messageResponse.setMessageResponseId(intentResponse.getResponseId());
+            messageResponse.setPlatformId(dbPlatform.getPlatformId());
+            messageResponse.setResponseId(intentResponse.getResponseId());
+            messageResponse.setResponseTypeId(intentResponse.getResponseTypeId());
+            messageResponse = messageResponseRespository.save(messageResponse);
+
+
             System.out.println("inlist:"+intentResponse.getIntentResponseId());
             if(intentResponse.getResponseTypeId().equals(Long.valueOf(1))){
                 DBTextResponse textResponse=textResponseRespository.findByTextResponseId(intentResponse.getResponseId());
@@ -221,7 +232,7 @@ public class HelloWorldController {
         return rs;
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/intentummary")
+    @RequestMapping(method = RequestMethod.GET, value = "/intentummary")
     public @ResponseBody
     IntentSummaryRs intentSummary( ){
 
@@ -286,5 +297,20 @@ public class HelloWorldController {
         return rs;
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
+    public @ResponseBody
+    UserMessageRs userMessage(@RequestParam(value = "q", defaultValue = "") Long fbId){
+           UserMessageRs rs=new UserMessageRs();
+           DBFbUser fbUser=fbUserRespository.findByFbUserId(fbId);
+           List<DBUser> userList=userRespository.findByPlatformUniqueUserId(fbUser.getFbId());
+           for (DBUser user:userList){
+               List<DBMessage> messageList=messageRespository.findBySessionId(user.getSessionId());
+               for (DBMessage message:messageList){
+                   List<DBIntentResponse> intentResponseList=intentResponseRepository.findByIntentId(message.getIntentId());
+               }
+           }
 
+
+        return rs;
+    }
 }

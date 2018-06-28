@@ -19,6 +19,8 @@ public interface MessageRespository extends CrudRepository<DBMessage, Long> {
     List<IntentPrecentage> getIntentCount();*/
     Long countByIntentId(Long intentid);
 
+    List<DBMessage> findBySessionId(String sessionId);
+
     //Long countBymessageId();
 
 

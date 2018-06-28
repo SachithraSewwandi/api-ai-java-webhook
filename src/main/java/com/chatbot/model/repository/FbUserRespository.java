@@ -16,7 +16,7 @@ public interface FbUserRespository extends CrudRepository<DBFbUser, Long> {
 
     DBFbUser save(DBFbUser fbUser);
 
-    //Boolean existsByFbId(String fbId);
+    DBFbUser findByFbUserId(Long fbUserId);
 
     DBFbUser findByFbId(String fbId);
 
