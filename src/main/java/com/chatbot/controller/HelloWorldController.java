@@ -130,7 +130,7 @@ public class HelloWorldController {
             user =userRespository.save(user);
             System.out.println("UserID:"+user.getUserId());
 
-            if (dbPlatform.getPlatformId()==1){
+            if (dbPlatform.getPlatformId().equals(Long.valueOf(1))){
                 DBFbUser dbFbUser1=fbUserRespository.findByFbId(senderId);
 
                 if(dbFbUser1==null){

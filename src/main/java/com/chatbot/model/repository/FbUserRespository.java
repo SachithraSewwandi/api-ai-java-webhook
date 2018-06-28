@@ -34,7 +34,7 @@ public interface FbUserRespository extends CrudRepository<DBFbUser, Long>   {
 
     List<DBFbUser> findByFirstNameContaining(String firstName);
 
-    @Query( "select e from fbUser e where e.firstName like %:firstName% ")
+    @Query( "select e from DBFbUser e where e.firstName like %:firstName% ")
     Page<DBFbUser> find(@org.springframework.data.repository.query.Param("firstName") String firstName, Pageable p);
 
 }
