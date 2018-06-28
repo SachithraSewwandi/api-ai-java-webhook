@@ -136,7 +136,6 @@ public class HelloWorldController {
                 if(dbFbUser1==null){
                     FbGraphApiUser fbGraphApiUser=fbGraphApiBo.getFbUserName(senderId);
                     sender=fbGraphApiUser.getFirst_name();
-                    // fbUser.setUserId(user.getUserId());
                     fbUser.setFbId(senderId);
                     fbUser.setFirstName(sender);
                     fbUser.setLastName(fbGraphApiUser.getLast_name());
