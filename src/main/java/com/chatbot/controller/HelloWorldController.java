@@ -22,7 +22,7 @@ import java.util.*;
 
 import static java.lang.Math.round;
 
-
+@CrossOrigin
 @Controller
 @RequestMapping("/webhook")
 public class HelloWorldController {
@@ -374,8 +374,8 @@ public class HelloWorldController {
         return rs;
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
     @CrossOrigin(origins = "http://localhost:4200")
+    @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
     public @ResponseBody
     UserMessageRs userMessage(@RequestBody UserMessageRq rq){
            Long fbId=rq.getFbId();
