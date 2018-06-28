@@ -23,8 +23,8 @@ public class DBMessageResponse {
     @Column(name = "intent_id")
     private Long intentId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "session_id")
+    private String sessionId;
 
     @Column(name = "response_id")
     private Long responseId;
@@ -65,12 +65,12 @@ public class DBMessageResponse {
         this.intentId = intentId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public Long getResponseId() {
