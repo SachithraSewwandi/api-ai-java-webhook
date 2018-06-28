@@ -7,7 +7,6 @@ import java.util.Date;
  * Created by sewwandiwi on 6/23/2018.
  */
 @Entity(name = "fbUser")
-@Table(name = "fbUser")
 public class DBFbUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -75,9 +75,6 @@ public class HelloWorldController {
     @Autowired
     MessageResponseRespository messageResponseRespository;
 
-    @Autowired
-    FBUserPagingRepository fbUserPagingRepository;
-
 
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody DialogflowRs webhook(
@@ -374,7 +371,7 @@ public class HelloWorldController {
         return rs;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    //@CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
     public @ResponseBody
     UserMessageRs userMessage(@RequestBody UserMessageRq rq){
