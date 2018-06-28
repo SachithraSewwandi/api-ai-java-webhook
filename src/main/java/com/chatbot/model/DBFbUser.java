@@ -6,23 +6,24 @@ import java.util.Date;
 /**
  * Created by sewwandiwi on 6/23/2018.
  */
-@Entity(name = "fb_user")
+@Entity(name = "fbUser")
+@Table(name = "fbUser")
 public class DBFbUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "fb_user_id")
+    @Column(name = "fbUserId")
     private Long fbUserId;
 
     /*@Column(name = "user_id")
     private Long userId;*/
 
-    @Column(name = "fb_id")
+    @Column(name = "fbId")
     private String fbId;
 
-   @Column(name ="first_name")
+   @Column(name ="firstName")
     private String firstName;
 
-   @Column(name = "last_name")
+   @Column(name = "lastName")
     private String lastName;
 
    @Column(name = "status")

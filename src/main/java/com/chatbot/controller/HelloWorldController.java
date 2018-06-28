@@ -9,11 +9,15 @@ import com.chatbot.rest.model.*;
 import com.chatbot.rest.rq.UserMessageRq;
 import com.chatbot.rest.tx.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.chatbot.rest.rq.DialogflowRq;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 import static java.lang.Math.round;
@@ -70,6 +74,9 @@ public class HelloWorldController {
 
     @Autowired
     MessageResponseRespository messageResponseRespository;
+
+    @Autowired
+    FBUserPagingRepository fbUserPagingRepository;
 
 
     @RequestMapping(method = RequestMethod.POST)
@@ -266,10 +273,77 @@ public class HelloWorldController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/listUser")
     public @ResponseBody
-    ListFbUserRs listUser(@RequestParam(value = "q", defaultValue = "") String name){
+    ListFbUserRs listUser(
+                          @RequestParam(value = "datatable[sort][field]" ,defaultValue = "firstName") final String e,
+                          @RequestParam(value = "datatable[sort][sort]" ,defaultValue = "asc") final String f,
+                          @RequestParam(name = "datatable[query][generalSearch]", defaultValue = "") String name,
+                          @RequestParam(name = "draw", defaultValue = "2") Integer d,
+                          @RequestParam(name = "datatable[pagination][perpage]", defaultValue = "10") final Integer length,
+                          @RequestParam(name = "datatable[pagination][page]", defaultValue = "2") final Integer start, final Pageable p){
 
        ListFbUserRs rs=new ListFbUserRs();
-       List<FBUser> userList=new ArrayList<>();
+
+        Pageable page = new Pageable() {
+            @Override
+            public int getPageNumber() {
+                return p.getPageNumber();
+            }
+
+            @Override
+            public int getPageSize() {
+                return length;
+            }
+
+            @Override
+            public int getOffset() {
+                return (start - 1)*length;
+            }
+
+            @Override
+            public Sort getSort() {
+                return new Sort(f.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, e);
+                //return p.getSort();
+            }
+
+            @Override
+            public Pageable next() {
+                return p.next();
+            }
+
+            @Override
+            public Pageable previousOrFirst() {
+                return p.previousOrFirst();
+            }
+
+            @Override
+            public Pageable first() {
+                return p.first();
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return p.hasPrevious();
+            }
+        };
+
+        Page<DBFbUser> data=fbUserRespository.find(name, page);
+
+        rs.getMeta().put("page",start);
+        rs.getMeta().put("pages",data.getTotalPages());
+        rs.getMeta().put("perpage",length);
+        rs.getMeta().put("total",data.getTotalElements());
+
+        //rs.getData().addAll(data.getContent());
+        List<FBUser> fbUserList=new ArrayList<>();
+        for (DBFbUser user:data.getContent()){
+            FBUser fbUser=new FBUser();
+            fbUser.setName(user.getFirstName()+" "+user.getLastName());
+            fbUser.setFbId(user.getFbUserId());
+            fbUserList.add(fbUser);
+        }
+        rs.setData(fbUserList);
+
+       /*List<FBUser> userList=new ArrayList<>();
        List<DBFbUser> dbFbUserList=new ArrayList<>();
        List<DBFbUser> dbFbUserList1=new ArrayList<>();
        if(name==""){
@@ -288,7 +362,7 @@ public class HelloWorldController {
                userList.add(fbUser1);
            }
        }
-        /*if (dbFbUserList1.size() > 0) {
+        *//*if (dbFbUserList1.size() > 0) {
             for (DBFbUser fbUser : dbFbUserList1) {
                 FBUser fbUser1 = new FBUser();
                 fbUser1.setName(fbUser.getFirstName() + " " + fbUser.getLastName());
@@ -296,11 +370,12 @@ public class HelloWorldController {
                 userList.add(fbUser1);
             }
         }*/
-       rs.setFbUserList(userList);
+       //rs.setFbUserList(userList);
         return rs;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
+    @CrossOrigin(origins = "http://localhost:4200")
     public @ResponseBody
     UserMessageRs userMessage(@RequestBody UserMessageRq rq){
            Long fbId=rq.getFbId();
