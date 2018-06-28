@@ -170,6 +170,7 @@ public class HelloWorldController {
             messageResponse.setPlatformId(dbPlatform.getPlatformId());
             messageResponse.setResponseId(intentResponse.getResponseId());
             messageResponse.setResponseTypeId(intentResponse.getResponseTypeId());
+            messageResponse.setUserId(user.getUserId());
             messageResponse = messageResponseRespository.save(messageResponse);
 
 
