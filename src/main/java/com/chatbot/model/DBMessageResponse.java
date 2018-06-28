@@ -33,6 +33,10 @@ public class DBMessageResponse {
     private Long responseTypeId;
 
 
+    @Column(name = "time_stamp")
+    private Date timeStamp;
+
+
     public Long getMessageResponseId() {
         return messageResponseId;
     }
@@ -87,5 +91,13 @@ public class DBMessageResponse {
 
     public void setResponseTypeId(Long responseTypeId) {
         this.responseTypeId = responseTypeId;
+    }
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

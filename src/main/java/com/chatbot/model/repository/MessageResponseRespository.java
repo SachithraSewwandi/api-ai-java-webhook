@@ -16,4 +16,8 @@ public interface MessageResponseRespository extends CrudRepository<DBMessageResp
     //List<DBCardButtons> findByCardResponseId(Long id);
 
     DBMessageResponse save(DBMessageResponse messageResponse);
+
+    List<DBMessageResponse> findByMessageId(Long messageId);
+
+
 }

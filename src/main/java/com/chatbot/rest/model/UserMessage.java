@@ -1,12 +1,24 @@
 package com.chatbot.rest.model;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by sewwandiwi on 6/28/2018.
  */
 public class UserMessage {
 
-    String userName;
-    String userMessage;
+    private String userName;
+    private List<String> userMessage;
+    private Date timeStamp;
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
     public String getUserName() {
         return userName;
@@ -16,11 +28,11 @@ public class UserMessage {
         this.userName = userName;
     }
 
-    public String getUserMessage() {
+    public List<String> getUserMessage() {
         return userMessage;
     }
 
-    public void setUserMessage(String userMessage) {
+    public void setUserMessage(List<String> userMessage) {
         this.userMessage = userMessage;
     }
 }

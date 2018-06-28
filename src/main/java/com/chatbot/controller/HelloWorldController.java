@@ -6,6 +6,7 @@ import com.chatbot.bo.WelcomeBo;
 import com.chatbot.model.*;
 import com.chatbot.model.repository.*;
 import com.chatbot.rest.model.*;
+import com.chatbot.rest.rq.UserMessageRq;
 import com.chatbot.rest.tx.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -166,11 +167,12 @@ public class HelloWorldController {
             DBMessageResponse messageResponse=new DBMessageResponse();
             messageResponse.setMessageId(message.getMessageId());
             messageResponse.setIntentId(intentResponse.getIntentId());
-            messageResponse.setMessageResponseId(intentResponse.getResponseId());
+            messageResponse.setResponseTypeId(intentResponse.getResponseId());
             messageResponse.setPlatformId(dbPlatform.getPlatformId());
             messageResponse.setResponseId(intentResponse.getResponseId());
             messageResponse.setResponseTypeId(intentResponse.getResponseTypeId());
             messageResponse.setSessionId(sessionId);
+            messageResponse.setTimeStamp(date);
             messageResponse = messageResponseRespository.save(messageResponse);
 
 
@@ -300,16 +302,88 @@ public class HelloWorldController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
     public @ResponseBody
-    UserMessageRs userMessage(@RequestParam(value = "q", defaultValue = "") Long fbId){
+    UserMessageRs userMessage(@RequestBody UserMessageRq rq){
+           Long fbId=rq.getFbId();
            UserMessageRs rs=new UserMessageRs();
+           List<UserMessage> userMessageList=new ArrayList<>();
            DBFbUser fbUser=fbUserRespository.findByFbUserId(fbId);
            List<DBUser> userList=userRespository.findByPlatformUniqueUserId(fbUser.getFbId());
            for (DBUser user:userList){
                List<DBMessage> messageList=messageRespository.findBySessionId(user.getSessionId());
+
                for (DBMessage message:messageList){
-                   List<DBIntentResponse> intentResponseList=intentResponseRepository.findByIntentId(message.getIntentId());
+
+                   UserMessage userMessage=new UserMessage();
+                   List<String> userMessageList1=new ArrayList<>();
+                   userMessage.setUserName(fbUser.getFirstName());
+                   userMessageList1.add(message.getMessage());
+                   userMessage.setUserMessage(userMessageList1);
+                   userMessage.setTimeStamp(message.getMessageTimeStamp());
+                   userMessageList.add(userMessage);
+
+                   List<DBMessageResponse> messageResponseList=messageResponseRespository.findByMessageId(message.getMessageId());
+                   List<String> responsetextList=new ArrayList<>();
+                   UserMessage responseMessage=new UserMessage();
+                   for (DBMessageResponse messageResponse:messageResponseList){
+
+                       responseMessage.setUserName("Mobitel");
+
+                       if(messageResponse.getResponseTypeId().equals(Long.valueOf(1))){
+                           DBTextResponse textResponse=textResponseRespository.findByTextResponseId(messageResponse.getResponseId());
+                           //Text text=new Text();
+
+                           responsetextList.add("Text : "+textResponse.getText());
+                           // text.setText(textList);
+                           //System.out.println("text:"+textList.get(0));
+                           //fulfillmentMessageText.setText(text);
+                           //fulfillmentMessages.add(fulfillmentMessageText);
+                       }else if(messageResponse.getResponseTypeId().equals(Long.valueOf(2))){
+                           DBQuickRepliesResponse quickRepliesResponse=quickRepliesResponseRespository.findByQuickRepliesId(messageResponse.getResponseId());
+                           List<DBQuickRepliesButtons> buttonsList=quickRepliesButtonRespository.findByQuickReplyResponseId(quickRepliesResponse.getQuickRepliesId());
+                           responsetextList.add("Quick Reply Title: "+quickRepliesResponse.getTitle());
+                           //QuickReplies quickReplies=new QuickReplies();
+                           //quickReplies.setTitle(quickRepliesResponse.getTitle());
+                           //System.out.println("QR:"+quickReplies.getTitle());
+                           List <String> quickrepliesList=new ArrayList<>();
+                           int count=0;
+                           for (DBQuickRepliesButtons buttons:buttonsList){
+                               count ++;
+                               //quickrepliesList.add(buttons.getQuickReplyTitle());
+                               responsetextList.add("Quick Reply Button "+count+" Title :"+buttons.getQuickReplyTitle());
+                           }
+                           //quickReplies.setQuickReplies(quickrepliesList);
+                           //fulfillmentMessageQuickReply.setQuickReplies(quickReplies);
+                           //fulfillmentMessages.add(fulfillmentMessageQuickReply);
+                       }else if(messageResponse.getResponseTypeId().equals(Long.valueOf(3))){
+                           DBCardResponse cardResponse=cardResponseRespository.findByCardResponseId(messageResponse.getResponseId());
+                           List<DBCardButtons> buttonsList=cardButtonRespository.findByCardResponseId(cardResponse.getCardResponseId());
+                           //Card card=new Card();
+                           //card.setTitle(cardResponse.getTitle());
+                           responsetextList.add("Card Title: " +cardResponse.getTitle());
+                           //System.out.println("card:"+ card.getTitle());
+                           //card.setSubtitle(cardResponse.getSubtitle());
+                           responsetextList.add("Card Subtitle: "+cardResponse.getSubtitle());
+                           List <Buttons> cardbuttonList=new ArrayList<>();
+                           int count=0;
+                           for (DBCardButtons buttons:buttonsList){
+                               count ++;
+                           /*Buttons buttons1=new Buttons();
+                           buttons1.setText(buttons.getCardButtonText());
+                           buttons1.setPostback(buttons.getCardButtonPostbackUrl());
+                           cardbuttonList.add(buttons1);*/
+                               responsetextList.add("Card Button " +count +" Title:" +buttons.getCardButtonText());
+                               responsetextList.add("Card Button " +count +" Postback URL:" +buttons.getCardButtonPostbackUrl());
+                           }
+                       }
+                   }
+                   responseMessage.setUserMessage(responsetextList);
+                   responseMessage.setTimeStamp(message.getMessageTimeStamp());
+                   userMessageList.add(responseMessage);
+
+
                }
            }
+           rs.setUserMessageList(userMessageList);
 
 
         return rs;
