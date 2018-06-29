@@ -191,13 +191,16 @@ public class HelloWorldController {
                     System.out.println("text:"+textResponse.getText());
                 }
 
-               /* if(intent.getDisplayName().equalsIgnoreCase("final")){
+                if(intent.getDisplayName().equalsIgnoreCase("final")){
                     String name=welcomeBo.getName(rq.getOriginalDetectIntentRequest().getPayload().getSender().getId());
-                   // String[] textarray=textResponse.getText().split(".");
+                    String[] textarray=textResponse.getText().split(".");
+                    for (String line:textarray){
+                        System.out.println(line);
+                    }
                     //textResponse.setText(textarray[0]+ " "+name+". "+textarray[1]);
                     //textResponse.setText(greeting + textResponse.getText());
                     System.out.println("text:"+textResponse.getText());
-                }*/
+                }
 
                 Text text=new Text();
                 List<String> textList=new ArrayList<>();
