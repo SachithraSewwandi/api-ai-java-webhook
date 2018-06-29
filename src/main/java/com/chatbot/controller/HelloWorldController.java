@@ -194,6 +194,7 @@ public class HelloWorldController {
                 if(intent.getDisplayName().equalsIgnoreCase("final")){
                     String name=welcomeBo.getName(rq.getOriginalDetectIntentRequest().getPayload().getSender().getId());
                     String[] textarray=textResponse.getText().split(".");
+                    System.out.println("******");
                     for (String line:textarray){
                         System.out.println(line);
                     }
