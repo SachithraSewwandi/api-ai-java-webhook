@@ -191,7 +191,7 @@ public class HelloWorldController {
                     System.out.println("text:"+textResponse.getText());
                 }
 
-                if(intent.getDisplayName().equalsIgnoreCase("Default Welcome Intent")){
+                if(intent.getDisplayName().equalsIgnoreCase("final")){
                     String name=welcomeBo.getName(rq.getOriginalDetectIntentRequest().getPayload().getSender().getId());
                     String[] textarray=textResponse.getText().split(".");
                     textResponse.setText(textarray[0]+ " "+name+". "+textarray[1]);
