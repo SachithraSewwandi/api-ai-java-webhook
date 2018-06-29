@@ -348,7 +348,7 @@ public class HelloWorldController {
         List<FBUser> fbUserList=new ArrayList<>();
         for (DBFbUser user:data.getContent()){
             FBUser fbUser=new FBUser();
-            fbUser.setName(user.getFirstName()+" "+user.getLastName());
+            fbUser.setFirstName(user.getFirstName()+" "+user.getLastName());
             fbUser.setFbId(user.getFbUserId());
             fbUserList.add(fbUser);
         }

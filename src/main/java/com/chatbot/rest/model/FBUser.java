@@ -6,7 +6,7 @@ package com.chatbot.rest.model;
 public class FBUser {
 
     private Long fbId;
-    private String name;
+    private String firstName;
 
     public Long getFbId() {
         return fbId;
@@ -16,11 +16,11 @@ public class FBUser {
         this.fbId = fbId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }
