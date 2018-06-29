@@ -274,12 +274,12 @@ public class HelloWorldController {
     @RequestMapping(method = RequestMethod.POST, value = "/listUser")
     public @ResponseBody
     ListFbUserRs listUser(
-                          @RequestParam(value = "[sort][field]" ,defaultValue = "firstName") final String e,
-                          @RequestParam(value = "[sort][sort]" ,defaultValue = "asc") final String f,
-                          @RequestParam(name = "[query][generalSearch]", defaultValue = "") String name,
+                          @RequestParam(value = "sort[field]" ,defaultValue = "firstName") final String e,
+                          @RequestParam(value = "sort[sort]" ,defaultValue = "asc") final String f,
+                          @RequestParam(name = "query[generalSearch]", defaultValue = "") String name,
                           @RequestParam(name = "draw", defaultValue = "2") Integer d,
-                          @RequestParam(name = "[pagination][perpage]", defaultValue = "10") final Integer length,
-                          @RequestParam(name = "[pagination][page]", defaultValue = "2") final Integer start, final Pageable p){
+                          @RequestParam(name = "pagination[perpage]", defaultValue = "10") final Integer length,
+                          @RequestParam(name = "pagination[page]", defaultValue = "2") final Integer start, final Pageable p){
 
        ListFbUserRs rs=new ListFbUserRs();
        System.out.println(name);
