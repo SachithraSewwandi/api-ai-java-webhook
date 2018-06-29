@@ -7,4 +7,6 @@ import java.io.IOException;
  */
 public interface WelcomeBo {
     String greetingText(String sender)throws IOException;
+
+    String getName(String sender) throws  IOException;
 }

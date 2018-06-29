@@ -44,4 +44,11 @@ public class WelcomeBoImpl implements WelcomeBo {
 
         return message;
     }
+
+    @Override
+    public String getName(String senderid) throws IOException {
+        FbGraphApiUser fbGraphApiUser=fbGraphApiBo.getFbUserName(senderid);
+        String sender=fbGraphApiUser.getFirst_name();
+        return sender;
+    }
 }

@@ -190,6 +190,15 @@ public class HelloWorldController {
                     textResponse.setText(greeting + textResponse.getText());
                     System.out.println("text:"+textResponse.getText());
                 }
+
+                if(intent.getDisplayName().equalsIgnoreCase("Default Welcome Intent")){
+                    String name=welcomeBo.getName(rq.getOriginalDetectIntentRequest().getPayload().getSender().getId());
+                    String[] textarray=textResponse.getText().split(".");
+                    textResponse.setText(textarray[0]+ " "+name+". "+textarray[1]);
+                    //textResponse.setText(greeting + textResponse.getText());
+                    System.out.println("text:"+textResponse.getText());
+                }
+
                 Text text=new Text();
                 List<String> textList=new ArrayList<>();
                 textList.add(textResponse.getText());
