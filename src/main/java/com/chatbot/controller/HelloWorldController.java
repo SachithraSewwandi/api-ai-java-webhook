@@ -271,7 +271,7 @@ public class HelloWorldController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.PUT, value = "/listUser")
+    @RequestMapping(method = RequestMethod.POST, value = "/listUser")
     public @ResponseBody
     ListFbUserRs listUser(
                           @RequestParam(value = "datatable[sort][field]" ,defaultValue = "firstName") final String e,
