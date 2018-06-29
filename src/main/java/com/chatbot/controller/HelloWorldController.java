@@ -191,13 +191,13 @@ public class HelloWorldController {
                     System.out.println("text:"+textResponse.getText());
                 }
 
-                if(intent.getDisplayName().equalsIgnoreCase("final")){
+               /* if(intent.getDisplayName().equalsIgnoreCase("final")){
                     String name=welcomeBo.getName(rq.getOriginalDetectIntentRequest().getPayload().getSender().getId());
-                    String[] textarray=textResponse.getText().split(".");
-                    textResponse.setText(textarray[0]+ " "+name+". "+textarray[1]);
+                   // String[] textarray=textResponse.getText().split(".");
+                    //textResponse.setText(textarray[0]+ " "+name+". "+textarray[1]);
                     //textResponse.setText(greeting + textResponse.getText());
                     System.out.println("text:"+textResponse.getText());
-                }
+                }*/
 
                 Text text=new Text();
                 List<String> textList=new ArrayList<>();
@@ -207,6 +207,7 @@ public class HelloWorldController {
                 fulfillmentMessageText.setText(text);
                 fulfillmentMessages.add(fulfillmentMessageText);
             }else if(intentResponse.getResponseTypeId().equals(Long.valueOf(2))){
+
                 DBQuickRepliesResponse quickRepliesResponse=quickRepliesResponseRespository.findByQuickRepliesId(intentResponse.getResponseId());
                 List<DBQuickRepliesButtons> buttonsList=quickRepliesButtonRespository.findByQuickReplyResponseId(quickRepliesResponse.getQuickRepliesId());
                 QuickReplies quickReplies=new QuickReplies();
