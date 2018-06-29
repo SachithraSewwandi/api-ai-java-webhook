@@ -370,7 +370,7 @@ public class HelloWorldController {
         return rs;
     }
 
-    //@CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
     public @ResponseBody
     UserMessageRs userMessage(@RequestBody UserMessageRq rq){
