@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * Created by sewwandiwi on 6/24/2018.
@@ -29,8 +30,9 @@ public class WelcomeBoImpl implements WelcomeBo {
         if(fbGraphApiUser.getFirst_name()!=null){
             message=message +fbGraphApiUser.getFirst_name() +",";
         }
-
+        TimeZone timeZone=TimeZone.getTimeZone("Asia/Colombo");
         GregorianCalendar time = new GregorianCalendar();
+        time.setTimeZone(timeZone);
 
         if(time.get(Calendar.HOUR_OF_DAY)<12){
             message=message+"Good Morning ! ";
