@@ -90,6 +90,9 @@ public class HelloWorldController {
         //Long userId=Long.valueOf(0);
         System.out.println(rq);
         System.out.println(rq.getQueryResult().getIntent().getDisplayName());
+
+
+
         //String message="";
 
         //response materials
@@ -267,6 +270,7 @@ public class HelloWorldController {
         return rs;
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT, value = "/listUser")
     public @ResponseBody
     ListFbUserRs listUser(
