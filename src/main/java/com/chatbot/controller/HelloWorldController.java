@@ -6,6 +6,7 @@ import com.chatbot.bo.WelcomeBo;
 import com.chatbot.model.*;
 import com.chatbot.model.repository.*;
 import com.chatbot.rest.model.*;
+import com.chatbot.rest.rq.ListUserRq;
 import com.chatbot.rest.rq.UserMessageRq;
 import com.chatbot.rest.tx.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,6 +195,7 @@ public class HelloWorldController {
                 if(intent.getDisplayName().equalsIgnoreCase("final")){
                     String name=welcomeBo.getName(rq.getOriginalDetectIntentRequest().getPayload().getSender().getId());
                     String[] textarray=textResponse.getText().split("\\.");
+                    user1.setFeedBackNumber(Long.valueOf(message.getMessage()));
                     System.out.println("******");
                     String newString="";
 
@@ -287,7 +289,7 @@ public class HelloWorldController {
         return rs;
     }
 
-    @CrossOrigin
+    /*@CrossOrigin
     @RequestMapping(method = RequestMethod.POST, value = "/listUser")
     public @ResponseBody
     ListFbUserRs listUser(
@@ -361,7 +363,7 @@ public class HelloWorldController {
         }
         rs.setData(fbUserList);
 
-       /*List<FBUser> userList=new ArrayList<>();
+       *//*List<FBUser> userList=new ArrayList<>();
        List<DBFbUser> dbFbUserList=new ArrayList<>();
        List<DBFbUser> dbFbUserList1=new ArrayList<>();
        if(name==""){
@@ -380,7 +382,45 @@ public class HelloWorldController {
                userList.add(fbUser1);
            }
        }
-        *//*if (dbFbUserList1.size() > 0) {
+        *//**//*if (dbFbUserList1.size() > 0) {
+            for (DBFbUser fbUser : dbFbUserList1) {
+                FBUser fbUser1 = new FBUser();
+                fbUser1.setName(fbUser.getFirstName() + " " + fbUser.getLastName());
+                fbUser1.setFbId(fbUser.getFbUserId());
+                userList.add(fbUser1);
+            }
+        }*//*
+       //rs.setFbUserList(userList);
+        return rs;
+    }
+*/
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.PUT, value = "/listUser")
+    public @ResponseBody
+    ListFbUserRs listUser(@RequestBody ListUserRq rq){
+
+        String name=rq.getName();
+        ListFbUserRs rs=new ListFbUserRs();
+        List<FBUser> userList=new ArrayList<>();
+        List<DBFbUser> dbFbUserList=new ArrayList<>();
+        List<DBFbUser> dbFbUserList1=new ArrayList<>();
+        if(name==""){
+            dbFbUserList=fbUserRespository.findAll();
+        }else {
+            // dbFbUserList=fbUserRespository.findByFirstName(name);
+            // dbFbUserList1=fbUserRespository.findByLastName(name);
+            //dbFbUserList=fbUserRespository.findByFirstNameAndLastName(name);
+            dbFbUserList=fbUserRespository.findByFirstNameContaining(name);
+        }
+        if(dbFbUserList.size()>0){
+            for (DBFbUser fbUser:dbFbUserList){
+                FBUser fbUser1=new FBUser();
+                fbUser1.setFirstName(fbUser.getFirstName()+ " "+fbUser.getLastName());
+                fbUser1.setFbId(fbUser.getFbUserId());
+                userList.add(fbUser1);
+            }
+        }
+        /*if (dbFbUserList1.size() > 0) {
             for (DBFbUser fbUser : dbFbUserList1) {
                 FBUser fbUser1 = new FBUser();
                 fbUser1.setName(fbUser.getFirstName() + " " + fbUser.getLastName());
@@ -388,10 +428,9 @@ public class HelloWorldController {
                 userList.add(fbUser1);
             }
         }*/
-       //rs.setFbUserList(userList);
+        rs.setData(userList);
         return rs;
     }
-
     @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
     public @ResponseBody
