@@ -280,6 +280,7 @@ public class HelloWorldController {
             intentPrecentage.setIntentID(intent.getIntentId());
             intentPrecentage.setIntentName(intent.getDisplayName());
             intentPrecentage.setIntentPrecentage(precentage);
+            intentPrecentage.setIntentCount(intentcount);
             System.out.println(intentcount + " "+intent.getDisplayName()+" "+precentage);
             intentPrecentageList.add(intentPrecentage);
         }
@@ -535,15 +536,25 @@ public class HelloWorldController {
        // UserMessageRs rs=new UserMessageRs();
         List<UserMessage> userMessageList=new ArrayList<>();
         DBFbUser fbUser=fbUserRespository.findByFbUserId(fbId);
-        List<DBUser> userList=userRespository.findByPlatformUniqueUserId(fbUser.getFbId());
-        for (DBUser user:userList) {
-            List<DBMessage> messageList = messageRespository.findBySessionId(user.getSessionId());
+        List<Object[]> intentCountList=messageRespository.intentCountforUser(fbUser.getFbId());
+        Long messageCount=messageRespository.countByPlatformUserId(fbUser.getFbId());
+        List<IntentPrecentage> intentPrecentageList=new ArrayList<>();
+        for (Object[] intentCount:intentCountList){
+            IntentPrecentage intentPrecentage=new IntentPrecentage();
+            int precentage=(int) Math.round((Double.valueOf(intentCount[1].toString())/Double.valueOf(messageCount))*100);
 
-            for (DBMessage message : messageList) {
-
-                UserMessage userMessage = new UserMessage();
-            }
+            intentPrecentage.setIntentID(Long.valueOf(intentCount[0].toString()));
+            DBIntent intent=intentRespository.findByIntentId(Long.valueOf(intentCount[0].toString()));
+            intentPrecentage.setIntentName(intent.getDisplayName());
+            intentPrecentage.setIntentPrecentage(precentage);
+            intentPrecentage.setIntentCount(Long.valueOf(intentCount[1].toString()));
+            //System.out.println(intentCount.getIntentCount() + " "+intent.getDisplayName()+" "+precentage);
+            intentPrecentageList.add(intentPrecentage);
         }
+        rs.setTotalQueries(messageCount);
+        rs.setIntentPrecentageList(intentPrecentageList);
+        rs.setCode(1000);
+        rs.setMessage("Success");
         return rs;
     }
 }

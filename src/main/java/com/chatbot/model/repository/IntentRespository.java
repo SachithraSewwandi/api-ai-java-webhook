@@ -15,4 +15,6 @@ public interface IntentRespository extends CrudRepository<DBIntent, Long> {
     DBIntent findByDialogflowIntentId(String dialogflowId);
 
     List<DBIntent> findAll();
+
+    DBIntent findByIntentId(Long intentId);
 }

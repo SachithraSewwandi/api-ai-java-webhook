@@ -8,6 +8,7 @@ public class IntentPrecentage {
     private Long intentID;
     private String intentName;
     private int intentPrecentage;
+    private Long intentCount;
 
     public Long getIntentID() {
         return intentID;
@@ -31,5 +32,13 @@ public class IntentPrecentage {
 
     public void setIntentPrecentage(int intentPrecentage) {
         this.intentPrecentage = intentPrecentage;
+    }
+
+    public Long getIntentCount() {
+        return intentCount;
+    }
+
+    public void setIntentCount(Long intentCount) {
+        this.intentCount = intentCount;
     }
 }
