@@ -7,6 +7,7 @@ public class FBUser {
 
     private Long fbId;
     private String firstName;
+    private String lastName;
 
     public Long getFbId() {
         return fbId;
@@ -22,5 +23,13 @@ public class FBUser {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

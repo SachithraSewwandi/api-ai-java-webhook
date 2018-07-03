@@ -162,6 +162,7 @@ public class HelloWorldController {
         message.setMessageTimeStamp(date);
         message.setPlatformId(dbPlatform.getPlatformId());
         message.setSessionId(sessionId);
+        message.setPlatformUserId(senderId);
 
 
         message=messageRespository.save(message);
@@ -394,6 +395,7 @@ public class HelloWorldController {
         return rs;
     }
 */
+
     @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT, value = "/listUser")
     public @ResponseBody
@@ -403,7 +405,7 @@ public class HelloWorldController {
         ListFbUserRs rs=new ListFbUserRs();
         List<FBUser> userList=new ArrayList<>();
         List<DBFbUser> dbFbUserList=new ArrayList<>();
-        List<DBFbUser> dbFbUserList1=new ArrayList<>();
+        //List<DBFbUser> dbFbUserList1=new ArrayList<>();
         if(name==""){
             dbFbUserList=fbUserRespository.findAll();
         }else {
@@ -412,14 +414,14 @@ public class HelloWorldController {
             //dbFbUserList=fbUserRespository.findByFirstNameAndLastName(name);
             dbFbUserList=fbUserRespository.findByFirstNameContaining(name);
         }
-        if(dbFbUserList.size()>0){
+       /* if(dbFbUserList.size()>0){
             for (DBFbUser fbUser:dbFbUserList){
                 FBUser fbUser1=new FBUser();
                 fbUser1.setFirstName(fbUser.getFirstName()+ " "+fbUser.getLastName());
                 fbUser1.setFbId(fbUser.getFbUserId());
                 userList.add(fbUser1);
             }
-        }
+        }*/
         /*if (dbFbUserList1.size() > 0) {
             for (DBFbUser fbUser : dbFbUserList1) {
                 FBUser fbUser1 = new FBUser();
@@ -428,9 +430,10 @@ public class HelloWorldController {
                 userList.add(fbUser1);
             }
         }*/
-        rs.setData(userList);
+        rs.setData(dbFbUserList);
         return rs;
     }
+
     @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT, value = "/userMessage")
     public @ResponseBody
@@ -518,6 +521,29 @@ public class HelloWorldController {
            rs.setUserMessageList(userMessageList);
 
 
+        return rs;
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.PUT, value = "/userIntentSummary")
+    public @ResponseBody
+    IntentSummaryRs userIntentSummary(@RequestBody UserMessageRq rq){
+        IntentSummaryRs rs=new IntentSummaryRs();
+
+
+        Long fbId=rq.getFbId();
+       // UserMessageRs rs=new UserMessageRs();
+        List<UserMessage> userMessageList=new ArrayList<>();
+        DBFbUser fbUser=fbUserRespository.findByFbUserId(fbId);
+        List<DBUser> userList=userRespository.findByPlatformUniqueUserId(fbUser.getFbId());
+        for (DBUser user:userList) {
+            List<DBMessage> messageList = messageRespository.findBySessionId(user.getSessionId());
+
+            for (DBMessage message : messageList) {
+
+                UserMessage userMessage = new UserMessage();
+            }
+        }
         return rs;
     }
 }

@@ -1,5 +1,6 @@
 package com.chatbot.rest.tx;
 
+import com.chatbot.model.DBFbUser;
 import com.chatbot.rest.model.FBUser;
 
 import java.util.HashMap;
@@ -11,14 +12,14 @@ import java.util.Map;
  */
 public class ListFbUserRs {
 
-   private List<FBUser> data;
+   private List<DBFbUser> data;
    private Map<String, Object> meta=new HashMap<String, Object>(0);
 
-    public List<FBUser> getData() {
+    public List<DBFbUser> getData() {
         return data;
     }
 
-    public void setData(List<FBUser> data) {
+    public void setData(List<DBFbUser> data) {
         this.data = data;
     }
 

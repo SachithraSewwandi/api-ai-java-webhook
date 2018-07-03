@@ -31,6 +31,9 @@ public class DBMessage {
     @Column(name = "message")
     private String message;
 
+    @Column(name = "platform_user_id")
+    private String platformUserId;
+
     public Long getMessageId() {
         return messageId;
     }
@@ -85,5 +88,13 @@ public class DBMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getPlatformUserId() {
+        return platformUserId;
+    }
+
+    public void setPlatformUserId(String platformUserId) {
+        this.platformUserId = platformUserId;
     }
 }
