@@ -30,6 +30,17 @@ public class DBFbUser {
    @Column(name = "status")
    private String status;
 
+   @Column(name = "image_url")
+   private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Long getFbUserId() {
         return fbUserId;
     }

@@ -143,6 +143,7 @@ public class HelloWorldController {
                     fbUser.setFbId(senderId);
                     fbUser.setFirstName(sender);
                     fbUser.setLastName(fbGraphApiUser.getLast_name());
+                    fbUser.setImageUrl(fbGraphApiUser.getProfile_pic());
                     System.out.println("sender name:"+fbGraphApiUser.getFirst_name());
 
                     fbUser=fbUserRespository.save(fbUser);
@@ -534,6 +535,39 @@ public class HelloWorldController {
 
         Long fbId=rq.getFbId();
        // UserMessageRs rs=new UserMessageRs();
+        List<UserMessage> userMessageList=new ArrayList<>();
+        DBFbUser fbUser=fbUserRespository.findByFbUserId(fbId);
+        List<Object[]> intentCountList=messageRespository.intentCountforUser(fbUser.getFbId());
+        Long messageCount=messageRespository.countByPlatformUserId(fbUser.getFbId());
+        List<IntentPrecentage> intentPrecentageList=new ArrayList<>();
+        for (Object[] intentCount:intentCountList){
+            IntentPrecentage intentPrecentage=new IntentPrecentage();
+            int precentage=(int) Math.round((Double.valueOf(intentCount[1].toString())/Double.valueOf(messageCount))*100);
+
+            intentPrecentage.setIntentID(Long.valueOf(intentCount[0].toString()));
+            DBIntent intent=intentRespository.findByIntentId(Long.valueOf(intentCount[0].toString()));
+            intentPrecentage.setIntentName(intent.getDisplayName());
+            intentPrecentage.setIntentPrecentage(precentage);
+            intentPrecentage.setIntentCount(Long.valueOf(intentCount[1].toString()));
+            //System.out.println(intentCount.getIntentCount() + " "+intent.getDisplayName()+" "+precentage);
+            intentPrecentageList.add(intentPrecentage);
+        }
+        rs.setTotalQueries(messageCount);
+        rs.setIntentPrecentageList(intentPrecentageList);
+        rs.setCode(1000);
+        rs.setMessage("Success");
+        return rs;
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.PUT, value = "/intentList")
+    public @ResponseBody
+    IntentSummaryRs intentList(@RequestBody UserMessageRq rq){
+        IntentSummaryRs rs=new IntentSummaryRs();
+
+
+        Long fbId=rq.getFbId();
+        // UserMessageRs rs=new UserMessageRs();
         List<UserMessage> userMessageList=new ArrayList<>();
         DBFbUser fbUser=fbUserRespository.findByFbUserId(fbId);
         List<Object[]> intentCountList=messageRespository.intentCountforUser(fbUser.getFbId());
