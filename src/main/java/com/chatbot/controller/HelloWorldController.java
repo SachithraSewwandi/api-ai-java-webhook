@@ -9,6 +9,7 @@ import com.chatbot.rest.model.*;
 import com.chatbot.rest.rq.ListUserRq;
 import com.chatbot.rest.rq.UserMessageRq;
 import com.chatbot.rest.tx.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -253,12 +254,14 @@ public class HelloWorldController {
 
 
         }
+        ObjectMapper mapper=new ObjectMapper();
+
 
         rs.setFulfillmentMessages(fulfillmentMessages);
         rs.setFulfillmentText("Text");
         rs.setSource("java-webhook");
 
-        System.out.println(rs);
+        System.out.println(mapper.writeValueAsString(rs));
         return rs;
     }
 
